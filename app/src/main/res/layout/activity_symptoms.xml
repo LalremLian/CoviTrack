@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SymptomsActivity">
+    <include
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_margin="10dp"
+                android:text="What are the symptoms of COVID-19 if you've had all of your vaccinations?"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#504F4F"
+                android:lineSpacingExtra="5dp"
+                android:layout_margin="10dp"
+                android:text="In general, we saw similar COVID-19 symptoms reported in the app by people who had and hadn't been vaccinated. Those who had already received a jab, on the other hand, reported fewer symptoms over a shorter period of time, implying that they were falling less seriously ill and recovering more quickly."/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_margin="10dp"
+                android:text="Here is the current ranking of COVID symptoms after 2 vaccinations:"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_margin="10dp"
+                android:text="⦿ Runny nose
+                            \n⦿ Headache
+                            \n⦿ Sneezing
+                            \n⦿ Sore throat
+                            \n⦿ Persistent cough"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#504F4F"
+                android:lineSpacingExtra="5dp"
+                android:layout_margin="10dp"
+                android:text="The previous 'traditional' symptoms, which are still listed on the government website, such as anosmia (loss of smell), shortness of breath, and fever, rank far down the list, at 6, 29, and 8, respectively. If you've had two vaccine doses, a persistent cough is now ranked fifth, so it's no longer the most reliable indicator of COVID."/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#504F4F"
+                android:lineSpacingExtra="5dp"
+                android:layout_margin="10dp"
+                android:text="Surprisingly, people who had been vaccinated and then tested positive for COVID-19 were more likely to report sneezing as a symptom than those who had not been vaccinated.
+
+\n\nIf you've been vaccinated and suddenly start sneezing a lot, you should get a COVID test, especially if you live or work near people who are more susceptible to the disease."/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

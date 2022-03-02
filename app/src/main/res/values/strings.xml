@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Covid</string>
+
+    //For the SliderPager..............
+    <string name="heading1">Noodles are a type of food made from unleavened dough which is rolled flat and cut, stretched or extruded, into long strips or strings. Noodles can be refrigerated for short-term storage or dried and stored for future use. Noodles are usually cooked in boiling water, sometimes with cooking oil or salt added.</string>
+    <string name="heading2">Owls are birds from the order Strigiformes, which includes over 200 species of mostly solitary and nocturnal birds of prey typified by an upright stance, a large, broad head, binocular vision, binaural hearing, sharp talons, and feathers adapted for silent flight.</string>
+    <string name="heading3">Freelance, freelancer, or freelance worker, are terms commonly used for a person who is self-employed and not necessarily committed to a particular employer long-term.</string>
+
+    //For navigation Drawer...............................
+    <string name="navigation_drawer_open">Covid</string>
+    <string name="navigation_drawer_close">Covid</string>
+</resources>
