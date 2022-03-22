@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.lazydeveloper.covid.R;
 
@@ -18,9 +17,9 @@ public class AdapterPager extends PagerAdapter
     Context context;
     int images[] =
             {
-                com.lazydeveloper.covid.R.drawable.item1,
-                com.lazydeveloper.covid.R.drawable.item2,
-                com.lazydeveloper.covid.R.drawable.item3
+                R.drawable.ic_item_one,
+                R.drawable.ic_item_two,
+                R.drawable.ic_item_three
             };
     int heading[] =
             {
@@ -53,10 +52,10 @@ public class AdapterPager extends PagerAdapter
         View view = layoutInflater.inflate(com.lazydeveloper.covid.R.layout.slider_layout,container,false);
 
         ImageView slidetitleimage = (ImageView) view.findViewById(com.lazydeveloper.covid.R.id.titleImage);
-        TextView slideHeading = (TextView) view.findViewById(com.lazydeveloper.covid.R.id.titleHeading);
+        //TextView slideHeading = (TextView) view.findViewById(com.lazydeveloper.covid.R.id.titleHeading);
 
         slidetitleimage.setImageResource(images[position]);
-        slideHeading.setText(heading[position]);
+        //slideHeading.setText(heading[position]);
 
         container.addView(view);
 

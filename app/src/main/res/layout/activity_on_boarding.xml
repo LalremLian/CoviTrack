@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OnBoardingActivity"
-    android:background="@drawable/on_boarding_bg">
+    android:background="@drawable/ic_onboarding">
 
     <Button
         android:id="@+id/skip"

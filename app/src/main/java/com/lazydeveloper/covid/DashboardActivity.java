@@ -20,10 +20,10 @@ import android.widget.LinearLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-public class DashboardActivity extends AppCompatActivity
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-    //Variables................................................................
-    Boolean backPress = false; //This one is for backButton....................
+    //Variables.....................................................................................
+    Boolean backPress = false; //This one is for backButton.........................................
 
     Toolbar toolbar;
     NavigationView navigationView;
@@ -47,13 +47,15 @@ public class DashboardActivity extends AppCompatActivity
         live = findViewById(R.id.liveCard);
         learnMore = findViewById(R.id.learnCard);
 
-        //Custom ToolBar........................................................
+        //Custom ToolBar............................................................................
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         toggle.syncState();
-        //navigationView.setNavigationItemSelectedListener(this);
+
+        //Without NavigationView, drawerMenu navigation won't work..................................
+        navigationView.setNavigationItemSelectedListener(this);
 
         live.setOnClickListener(v ->
         {
@@ -66,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity
             startActivity(intent);
         });
     }
-    //For back button.........................................................
+    //For back button...............................................................................
     @Override
     public void onBackPressed()
     {
@@ -95,31 +97,20 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-    //For DrawerMenu............................................................
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_item,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item)
-    {
-        switch (item.getItemId())
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId())
         {
             case R.id.home:
-                Intent intent = new Intent(this,MainActivity.class);
+                Intent intent = new Intent(DashboardActivity.this, DashboardActivity.class);
                 startActivity(intent);
-                finish();
-                return true;
+                break;
             case R.id.about:
-                ///Intent intent2 = new Intent(this,ProfileActivity.class);
-                //startActivity(intent2);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                Intent intent1 = new Intent(DashboardActivity.this, AboutMeActivity.class);
+                startActivity(intent1);
+                break;
         }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

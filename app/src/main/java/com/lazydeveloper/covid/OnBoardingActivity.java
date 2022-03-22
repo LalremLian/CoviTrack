@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -36,6 +37,12 @@ public class OnBoardingActivity extends AppCompatActivity {
         mSLideViewPager = (ViewPager) findViewById(R.id.viewPager1);        //viewPager................
         mDotLayout = (LinearLayout) findViewById(R.id.indicator_layput);
 
+        SharedPreferences sh = getSharedPreferences("OnBoarding",MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sh.edit();
+
+        myEdit.putBoolean("Boolean",true);
+        myEdit.apply();
+
         adapterPager = new AdapterPager(this);
 
         mSLideViewPager.setAdapter(adapterPager);
@@ -55,14 +62,14 @@ public class OnBoardingActivity extends AppCompatActivity {
             if (getitem(0) < 2)
                 mSLideViewPager.setCurrentItem(getitem(1),true);
             else {
-                Intent i = new Intent(OnBoardingActivity.this,MainActivity.class);
+                Intent i = new Intent(OnBoardingActivity.this,DashboardActivity.class);
                 startActivity(i);
                 finish();
             }
         });
         skipbtn.setOnClickListener(v ->
         {
-            Intent i = new Intent(OnBoardingActivity.this,MainActivity.class);
+            Intent i = new Intent(OnBoardingActivity.this,DashboardActivity.class);
             startActivity(i);
             finish();
         });

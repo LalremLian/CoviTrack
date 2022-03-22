@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SymptomsActivity">
+    <include
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_lalrem"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:text="Software Developer"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#504F4F"
+                android:lineSpacingExtra="5dp"
+                android:layout_margin="10dp"
+                android:text="A well-qualified, hardworking person with  over 1.5+ years of experience in native android app development and designing UI/UX. Seeking to work at high tech companies and energetic work environment. I possess strong knowledge in Problem Solving, Android Studio, MVVM design architecture,  Data integration using REST API's, Retrofit and Volley network libraries."
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_margin="10dp"
+                android:text="Follow me on:"/>
+
+                <ImageView
+                    android:id="@+id/img_github"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_git"
+                    android:padding="5dp"/>
+            <ImageView
+                    android:id="@+id/img_linkedin"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_linkedin"
+                    android:padding="5dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

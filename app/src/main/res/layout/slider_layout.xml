@@ -8,19 +8,19 @@
 
     <ImageView
         android:id="@+id/titleImage"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:src="@drawable/item1"
         android:layout_gravity="center"/>
-    <TextView
+    <!--<TextView
         android:id="@+id/titleHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/heading1"
         android:layout_below="@+id/titleImage"
         android:textSize="20sp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="120dp"
         android:justificationMode="inter_word"
         android:textStyle="bold"
-        android:textColor="#BCFFFFFF"/>
+        android:textColor="#BCFFFFFF"/>-->
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.lazydeveloper.covid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -16,6 +17,7 @@ public class SplashScreenActivity extends AppCompatActivity
     Animation topAnim, botAnim;
     TextView txTitle, txMoto;
     ImageView imageView;
+    Boolean bool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,10 +43,20 @@ public class SplashScreenActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                Intent intent = new Intent(SplashScreenActivity.this,OnBoardingActivity.class);
-                startActivity(intent);
-                finish();
+                SharedPreferences sh = getSharedPreferences("OnBoarding",0);
+                bool = sh.getBoolean("Boolean",false);
+                if (bool)
+                {
+                    Intent intent1 = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                    startActivity(intent1);
+                    finish();
+                }else
+                {
+                    Intent intent2 = new Intent(SplashScreenActivity.this, OnBoardingActivity.class);
+                    startActivity(intent2);
+                    finish();
+                }
             }
-        },3000);
+        },2500);
     }
 }
