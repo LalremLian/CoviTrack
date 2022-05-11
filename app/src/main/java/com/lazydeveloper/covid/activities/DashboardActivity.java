@@ -1,4 +1,4 @@
-package com.lazydeveloper.covid;
+package com.lazydeveloper.covid.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,14 +11,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.lazydeveloper.covid.R;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -39,11 +37,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        //Hooks
+        //Initializing Variables....................................................................
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
-        layout = findViewById(R.id.layout1);
+        layout = findViewById(R.id.dashboard_layout);
         live = findViewById(R.id.liveCard);
         learnMore = findViewById(R.id.learnCard);
 
@@ -84,16 +82,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         else
         {
             Snackbar snackbar = Snackbar.make(layout,"Press again to Exit.",Snackbar.LENGTH_SHORT);
+            layout.setPadding(0, 0, 0, 0);
             snackbar.show();
             backPress = true;
-            new Handler().postDelayed(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    backPress = false;
-                }
-            },2000);
+            new Handler().postDelayed(() -> backPress = false,2000);
         }
     }
 

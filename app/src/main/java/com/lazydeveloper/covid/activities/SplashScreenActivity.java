@@ -1,4 +1,4 @@
-package com.lazydeveloper.covid;
+package com.lazydeveloper.covid.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,9 +11,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lazydeveloper.covid.R;
+
 public class SplashScreenActivity extends AppCompatActivity
 {
-    //Variables............................................
+    //Variables.....................................................................................
     Animation topAnim, botAnim;
     TextView txTitle, txMoto;
     ImageView imageView;
@@ -25,37 +27,31 @@ public class SplashScreenActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        //Animation........................................
+        //Animation.................................................................................
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         botAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
 
-        //Hooks............................................
+        //Initialing Variables......................................................................
         txTitle = findViewById(R.id.title);
-        //txMoto = findViewById(R.id.moto);
         imageView = findViewById(R.id.logo);
 
         imageView.setAnimation(topAnim);
         txTitle.setAnimation(botAnim);
-        //txMoto.setAnimation(botAnim);
 
-        new Handler().postDelayed(new Runnable()
+        new Handler().postDelayed(() ->
         {
-            @Override
-            public void run()
+            SharedPreferences sh = getSharedPreferences("OnBoarding",0);
+            bool = sh.getBoolean("Boolean",false);
+            if (bool)
             {
-                SharedPreferences sh = getSharedPreferences("OnBoarding",0);
-                bool = sh.getBoolean("Boolean",false);
-                if (bool)
-                {
-                    Intent intent1 = new Intent(SplashScreenActivity.this, DashboardActivity.class);
-                    startActivity(intent1);
-                    finish();
-                }else
-                {
-                    Intent intent2 = new Intent(SplashScreenActivity.this, OnBoardingActivity.class);
-                    startActivity(intent2);
-                    finish();
-                }
+                Intent intent1 = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                startActivity(intent1);
+                finish();
+            }else
+            {
+                Intent intent2 = new Intent(SplashScreenActivity.this, OnBoardingActivity.class);
+                startActivity(intent2);
+                finish();
             }
         },2500);
     }

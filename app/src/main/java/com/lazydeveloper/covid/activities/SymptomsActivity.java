@@ -1,10 +1,12 @@
-package com.lazydeveloper.covid;
+package com.lazydeveloper.covid.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.lazydeveloper.covid.R;
 
 public class SymptomsActivity extends AppCompatActivity
 {

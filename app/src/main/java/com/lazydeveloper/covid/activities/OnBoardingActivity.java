@@ -1,4 +1,4 @@
-package com.lazydeveloper.covid;
+package com.lazydeveloper.covid.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -12,11 +12,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lazydeveloper.covid.R;
 import com.lazydeveloper.covid.adapter.AdapterPager;
 
 public class OnBoardingActivity extends AppCompatActivity {
 
-    //Variables...............
+    //Variables.....................................................................................
     ViewPager mSLideViewPager;
     LinearLayout mDotLayout;
     Button backbtn, nextbtn, skipbtn;
@@ -29,13 +30,13 @@ public class OnBoardingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_boarding);
 
-        //Hooks..........................
+        //Initializing Variables....................................................................
         backbtn = findViewById(R.id.back);
         nextbtn = findViewById(R.id.next);
         skipbtn = findViewById(R.id.skip);
 
-        mSLideViewPager = (ViewPager) findViewById(R.id.viewPager1);        //viewPager................
-        mDotLayout = (LinearLayout) findViewById(R.id.indicator_layput);
+        mSLideViewPager = findViewById(R.id.viewPager1);
+        mDotLayout = findViewById(R.id.indicator_layput);
 
         SharedPreferences sh = getSharedPreferences("OnBoarding",MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();
@@ -44,9 +45,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         myEdit.apply();
 
         adapterPager = new AdapterPager(this);
-
         mSLideViewPager.setAdapter(adapterPager);
-
         setUpindicator(0);
         mSLideViewPager.addOnPageChangeListener(viewListener);
 

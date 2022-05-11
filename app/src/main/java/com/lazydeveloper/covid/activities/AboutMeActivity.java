@@ -1,4 +1,4 @@
-package com.lazydeveloper.covid;
+package com.lazydeveloper.covid.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,19 +10,21 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lazydeveloper.covid.R;
+
 public class AboutMeActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView txttoolbar;
-
     ImageView imgGit, imgLinkedin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_me);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        txttoolbar = (TextView) findViewById(R.id.txttoolbar);
+        toolbar = findViewById(R.id.toolbar);
+        txttoolbar = findViewById(R.id.txttoolbar);
 
         imgGit = findViewById(R.id.img_github);
         imgLinkedin = findViewById(R.id.img_linkedin);
@@ -31,7 +33,7 @@ public class AboutMeActivity extends AppCompatActivity {
         getSupportActionBar().setTitle((" "));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //For changing the color of a back button.......
+        //For changing the color of a back button...................................................
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         txttoolbar.setText("Profile");
 

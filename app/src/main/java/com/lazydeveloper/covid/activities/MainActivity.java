@@ -1,11 +1,8 @@
-package com.lazydeveloper.covid;
+package com.lazydeveloper.covid.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,30 +11,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.lazydeveloper.covid.R;
 import com.lazydeveloper.covid.adapter.SpinnerAdapter;
 import com.lazydeveloper.covid.covid.CasesModel;
 import com.lazydeveloper.covid.covid.JSONPlaceholder;
@@ -46,13 +35,8 @@ import com.squareup.picasso.Picasso;
 
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.charts.StackedBarChart;
-import org.eazegraph.lib.charts.ValueLineChart;
 import org.eazegraph.lib.models.BarModel;
 import org.eazegraph.lib.models.PieModel;
-import org.eazegraph.lib.models.StackedBarModel;
-import org.eazegraph.lib.models.ValueLinePoint;
-import org.eazegraph.lib.models.ValueLineSeries;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -63,15 +47,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-    //Variables................................................................
+    //Variables.....................................................................................
     ImageView countryImage,flag;
     TextView tconfirm, active, recovered, death, tvDate,tvTitle, countryName, tvCases, tvCritical;
     TextView todaysCon, todaysAct, todaysRecov, todaysDeath;
     PieChart pieChart;
     LinearLayout layout;
     BarChart mBarChart;
+    SwipeRefreshLayout swipeRefreshLayout;
 
-    //For Navigation Drawer.....................................................
+    //For Navigation Drawer.........................................................................
     Toolbar toolbar;
     TextView txttoolbar;
 
@@ -88,8 +73,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Hooks............................
-
+        //Initializing variables....................................................................
         tconfirm = findViewById(R.id.tvConfirm);
         active = findViewById(R.id.tvActive);
         recovered = findViewById(R.id.tvRecovered);
@@ -107,54 +91,54 @@ public class MainActivity extends AppCompatActivity
         countryName = findViewById(R.id.tvCountryName);
         tvCases = findViewById(R.id.tvCases);
         tvCritical = findViewById(R.id.tvCritical);
-        //countryImage = findViewById(R.id.countryImage);
         flag = findViewById(R.id.flag);
-        mBarChart = (BarChart) findViewById(R.id.barchart);
+        mBarChart = findViewById(R.id.barchart);
+        swipeRefreshLayout = findViewById(R.id.swiper_refresh);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        txttoolbar = (TextView) findViewById(R.id.txttoolbar);
+        toolbar = findViewById(R.id.toolbar);
+        txttoolbar = findViewById(R.id.txttoolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle((" "));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //For changing the color of a back button.......
+        //For changing the color of a back button...................................................
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         txttoolbar.setText("Live Update");
 
-        boolean connected = false;
+        checkConnection();
 
+        swipeRefreshLayout.setOnRefreshListener(() ->
+                checkConnection());
+    }
+
+    private void checkConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
             //we are connected to a network
-            connected = true;
-        }
-        else
-        {
-            connected = false;
-        }
-        if (connected)
-        {
-            //Retrofit...............................................................
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://corona.lmao.ninja/v2/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-
+            swipeRefreshLayout.setRefreshing(false);
             getCountryData();
         }
         else
         {
+            swipeRefreshLayout.setRefreshing(false);
             Snackbar snackbar = Snackbar.make(layout,"Connection failed. Please check your internet.",Snackbar.LENGTH_LONG);
+            layout.setPadding(0, 0, 0, 0);
             snackbar.show();
         }
     }
 
     private void getCountryData()
     {
-        //Custom progressBar.....................................................
+        //Retrofit..................................................................................
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://corona.lmao.ninja/v2/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
+
+        //Custom progressBar........................................................................
         Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.custom_progress);
         if (dialog.getWindow()!=null)
@@ -176,9 +160,6 @@ public class MainActivity extends AppCompatActivity
                     allList = new ArrayList<SpinnerModel>();
                     for (int i = 0; i<list.size(); i++)
                     {
-//                        distList.add(list.get(i).getCountry());
-//                        distList.add(list.get(i).getCountryInfo().getFlag());
-
                         SpinnerModel item = new SpinnerModel(list.get(i).getCountry(), list.get(i).getCountryInfo().getFlag());
                         allList.add(item);
                     }
@@ -203,7 +184,7 @@ public class MainActivity extends AppCompatActivity
 
     private void spinner()
     {
-        spinner = (Spinner) findViewById(R.id.spinner1);
+        spinner = findViewById(R.id.spinner1);
         spinner.setAdapter(new SpinnerAdapter(this, R.layout.spinner_dropdown, allList));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
