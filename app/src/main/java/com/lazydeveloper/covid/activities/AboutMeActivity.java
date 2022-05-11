@@ -3,6 +3,7 @@ package com.lazydeveloper.covid.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,12 +13,15 @@ import android.widget.TextView;
 
 import com.lazydeveloper.covid.R;
 
+import java.util.Objects;
+
 public class AboutMeActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView txttoolbar;
     ImageView imgGit, imgLinkedin;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +34,7 @@ public class AboutMeActivity extends AppCompatActivity {
         imgLinkedin = findViewById(R.id.img_linkedin);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle((" "));
+        Objects.requireNonNull(getSupportActionBar()).setTitle((" "));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //For changing the color of a back button...................................................
@@ -52,11 +56,10 @@ public class AboutMeActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
+        if (item.getItemId() == android.R.id.home) {
+            finish();
 //                this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                return true;
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

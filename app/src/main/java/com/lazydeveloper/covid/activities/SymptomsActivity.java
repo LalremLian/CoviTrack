@@ -3,10 +3,13 @@ package com.lazydeveloper.covid.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.lazydeveloper.covid.R;
+
+import java.util.Objects;
 
 public class SymptomsActivity extends AppCompatActivity
 {
@@ -14,6 +17,7 @@ public class SymptomsActivity extends AppCompatActivity
     Toolbar toolbar;
     TextView txttoolbar;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +28,7 @@ public class SymptomsActivity extends AppCompatActivity
         txttoolbar = (TextView) findViewById(R.id.txttoolbar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle((" "));
+        Objects.requireNonNull(getSupportActionBar()).setTitle((" "));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //For changing the color of a back button................................

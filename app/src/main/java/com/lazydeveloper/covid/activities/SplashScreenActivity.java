@@ -2,6 +2,7 @@ package com.lazydeveloper.covid.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,11 +14,12 @@ import android.widget.TextView;
 
 import com.lazydeveloper.covid.R;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashScreenActivity extends AppCompatActivity
 {
     //Variables.....................................................................................
     Animation topAnim, botAnim;
-    TextView txTitle, txMoto;
+    TextView txTitle;
     ImageView imageView;
     Boolean bool;
 

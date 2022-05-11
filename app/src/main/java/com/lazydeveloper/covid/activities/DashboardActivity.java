@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -77,7 +78,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         else if(backPress)
         {
             super.onBackPressed();
-            return;
         }
         else
         {
@@ -89,6 +89,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId())

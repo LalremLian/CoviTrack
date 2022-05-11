@@ -1,5 +1,6 @@
 package com.lazydeveloper.covid.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -7,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -43,11 +45,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 {
-    //Variables.....................................................................................
-    ImageView countryImage,flag;
+     ImageView flag;
     TextView tconfirm, active, recovered, death, tvDate,tvTitle, countryName, tvCases, tvCritical;
     TextView todaysCon, todaysAct, todaysRecov, todaysDeath;
     PieChart pieChart;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity
 
     BaseApiService mApiService;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity
         txttoolbar = findViewById(R.id.txttoolbar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle((" "));
+        Objects.requireNonNull(getSupportActionBar()).setTitle((" "));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //For changing the color of a back button...................................................
@@ -109,8 +112,7 @@ public class MainActivity extends AppCompatActivity
 
         checkConnection();
 
-        swipeRefreshLayout.setOnRefreshListener(() ->
-                checkConnection());
+        swipeRefreshLayout.setOnRefreshListener(this::checkConnection);
     }
 
     private void checkConnection() {
@@ -143,13 +145,14 @@ public class MainActivity extends AppCompatActivity
 
         mApiService.getCovidData().enqueue(new Callback<List<CasesModel>>() {
             @Override
-            public void onResponse(Call<List<CasesModel>> call, Response<List<CasesModel>> response) {
+            public void onResponse(@NonNull Call<List<CasesModel>> call, @NonNull Response<List<CasesModel>> response) {
 
                 if (response.isSuccessful())
                 {
+                    assert response.body() != null;
                     list.addAll(response.body());
                     Log.e("Response", list.toString());
-                    allList = new ArrayList<SpinnerModel>();
+                    allList = new ArrayList<>();
                     for (int i = 0; i<list.size(); i++)
                     {
                         SpinnerModel item = new SpinnerModel(list.get(i).getCountry(), list.get(i).getCountryInfo().getFlag());
@@ -159,17 +162,14 @@ public class MainActivity extends AppCompatActivity
                     Log.e("data",allList.toString());
 
                     spinner();
-                    if (dialog != null)
-                    {
-                        dialog.dismiss();
-                    }
+                    dialog.dismiss();
                 }else
                     Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
-            public void onFailure(Call<List<CasesModel>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<CasesModel>> call, @NonNull Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity
                                 .error(R.drawable.ic_launcher_background)
                                 .into(flag);
 
-                        Log.e("flag",stFlag.toString());
+                        Log.e("flag", stFlag);
 
                         tconfirm.setText(NumberFormat.getInstance().format(confirm));
                         todaysCon.setText("(+" + NumberFormat.getInstance().format(newCases) + ")");
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity
                         pieChart.startAnimation();
 
                         TextView tvDemo = findViewById(R.id.demo);
-                        tvDemo.setText(String.format(iso));
+                        tvDemo.setText(iso);
 
                         mBarChart.addBar(new BarModel("A",oneCasePerPeople, 0xFF123456));
                         mBarChart.addBar(new BarModel("B",critical, 0xFF123456));
@@ -261,9 +262,10 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void setText(String updated)
     {
-        DateFormat format = new SimpleDateFormat("dd-MM, yyyy");
+        @SuppressLint("SimpleDateFormat") DateFormat format = new SimpleDateFormat("dd-MM, yyyy");
 
         long millisec = Long.parseLong(updated);
 
