@@ -6,8 +6,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -26,10 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lazydeveloper.covid.ApiUtilities.BaseApiService;
+import com.lazydeveloper.covid.ApiUtilities.UtilsApi;
 import com.lazydeveloper.covid.R;
 import com.lazydeveloper.covid.adapter.SpinnerAdapter;
-import com.lazydeveloper.covid.covid.CasesModel;
-import com.lazydeveloper.covid.covid.JSONPlaceholder;
+import com.lazydeveloper.covid.model.CasesModel;
 import com.lazydeveloper.covid.spinner.SpinnerModel;
 import com.squareup.picasso.Picasso;
 
@@ -60,12 +59,12 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     TextView txttoolbar;
 
-    JSONPlaceholder jsonPlaceholder;
     List<CasesModel> list = new ArrayList<>();
 
-    ArrayList<String> distList = new ArrayList<>();
     ArrayList<SpinnerModel> allList;
     Spinner spinner;
+
+    BaseApiService mApiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,6 +105,8 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         txttoolbar.setText("Live Update");
 
+        mApiService = UtilsApi.getOthersAPIService();
+
         checkConnection();
 
         swipeRefreshLayout.setOnRefreshListener(() ->
@@ -131,13 +132,6 @@ public class MainActivity extends AppCompatActivity
 
     private void getCountryData()
     {
-        //Retrofit..................................................................................
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://corona.lmao.ninja/v2/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-
         //Custom progressBar........................................................................
         Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.custom_progress);
@@ -147,12 +141,10 @@ public class MainActivity extends AppCompatActivity
         }
         dialog.show();
 
-        Call<List<CasesModel>> call = jsonPlaceholder.getCovidData();
-        call.enqueue(new Callback<List<CasesModel>>()
-        {
+        mApiService.getCovidData().enqueue(new Callback<List<CasesModel>>() {
             @Override
-            public void onResponse(Call<List<CasesModel>> call, Response<List<CasesModel>> response)
-            {
+            public void onResponse(Call<List<CasesModel>> call, Response<List<CasesModel>> response) {
+
                 if (response.isSuccessful())
                 {
                     list.addAll(response.body());
@@ -173,10 +165,11 @@ public class MainActivity extends AppCompatActivity
                     }
                 }else
                     Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+
             }
+
             @Override
-            public void onFailure(Call<List<CasesModel>> call, Throwable t)
-            {
+            public void onFailure(Call<List<CasesModel>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

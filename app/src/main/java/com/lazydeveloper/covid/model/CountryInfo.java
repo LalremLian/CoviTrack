@@ -1,4 +1,4 @@
-package com.lazydeveloper.covid.covid;
+package com.lazydeveloper.covid.model;
 
 public class CountryInfo {
     String _id;
