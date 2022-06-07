@@ -2,8 +2,6 @@ package com.lazydeveloper.covid.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,10 +17,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -30,12 +24,11 @@ import com.lazydeveloper.covid.ApiUtilities.BaseApiService;
 import com.lazydeveloper.covid.ApiUtilities.UtilsApi;
 import com.lazydeveloper.covid.R;
 import com.lazydeveloper.covid.adapter.SpinnerAdapter;
+import com.lazydeveloper.covid.databinding.ActivityMainBinding;
 import com.lazydeveloper.covid.model.CasesModel;
 import com.lazydeveloper.covid.spinner.SpinnerModel;
 import com.squareup.picasso.Picasso;
 
-import org.eazegraph.lib.charts.BarChart;
-import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.BarModel;
 import org.eazegraph.lib.models.PieModel;
 
@@ -49,22 +42,11 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 {
-     ImageView flag;
-    TextView tconfirm, active, recovered, death, tvDate,tvTitle, countryName, tvCases, tvCritical;
-    TextView todaysCon, todaysAct, todaysRecov, todaysDeath;
-    PieChart pieChart;
-    LinearLayout layout;
-    BarChart mBarChart;
-    SwipeRefreshLayout swipeRefreshLayout;
-
-    //For Navigation Drawer.........................................................................
-    Toolbar toolbar;
-    TextView txttoolbar;
+    ActivityMainBinding mainBinding;
 
     List<CasesModel> list = new ArrayList<>();
 
     ArrayList<SpinnerModel> allList;
-    Spinner spinner;
 
     BaseApiService mApiService;
 
@@ -73,61 +55,41 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mainBinding.getRoot());
 
         //Initializing variables....................................................................
-        tconfirm = findViewById(R.id.tvConfirm);
-        active = findViewById(R.id.tvActive);
-        recovered = findViewById(R.id.tvRecovered);
-        death = findViewById(R.id.tvDeath);
-        todaysCon = findViewById(R.id.todaysConfirm);
-        todaysAct = findViewById(R.id.TodaysActive);
-        todaysRecov = findViewById(R.id.todaysRecovered);
-        todaysDeath = findViewById(R.id.todaysDeath);
-        todaysDeath = findViewById(R.id.todaysDeath);
-        layout = findViewById(R.id.mainLayout);
-        pieChart = findViewById(R.id.piechart);
-        tvDate = findViewById(R.id.date);
-        spinner = findViewById(R.id.spinner1);
-        tvTitle = findViewById(R.id.title);
-        countryName = findViewById(R.id.tvCountryName);
-        tvCases = findViewById(R.id.tvCases);
-        tvCritical = findViewById(R.id.tvCritical);
-        flag = findViewById(R.id.flag);
-        mBarChart = findViewById(R.id.barchart);
-        swipeRefreshLayout = findViewById(R.id.swiper_refresh);
 
-        toolbar = findViewById(R.id.toolbar);
-        txttoolbar = findViewById(R.id.txttoolbar);
-
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mainBinding.toolbar.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle((" "));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //For changing the color of a back button...................................................
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        txttoolbar.setText("Live Update");
+        mainBinding.toolbar.txttoolbar.setText("Live Update");
 
         mApiService = UtilsApi.getOthersAPIService();
 
         checkConnection();
 
-        swipeRefreshLayout.setOnRefreshListener(this::checkConnection);
+        mainBinding.swiperRefresh.setOnRefreshListener(this::checkConnection);
     }
 
-    private void checkConnection() {
+    private void checkConnection()
+    {
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            //we are connected to a network
-            swipeRefreshLayout.setRefreshing(false);
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)
+        {
+            //we are connected to a network.........................................................
+            mainBinding.swiperRefresh.setRefreshing(false);
             getCountryData();
         }
         else
         {
-            swipeRefreshLayout.setRefreshing(false);
-            Snackbar snackbar = Snackbar.make(layout,"Connection failed. Please check your internet.",Snackbar.LENGTH_LONG);
-            layout.setPadding(0, 0, 0, 0);
+            mainBinding.swiperRefresh.setRefreshing(false);
+            Snackbar snackbar = Snackbar.make(mainBinding.mainLayout,"Connection failed. Please check your internet.",Snackbar.LENGTH_LONG);
+            mainBinding.mainLayout.setPadding(0, 0, 0, 0);
             snackbar.show();
         }
     }
@@ -143,7 +105,8 @@ public class MainActivity extends AppCompatActivity
         }
         dialog.show();
 
-        mApiService.getCovidData().enqueue(new Callback<List<CasesModel>>() {
+        mApiService.getCovidData().enqueue(new Callback<List<CasesModel>>()
+        {
             @Override
             public void onResponse(@NonNull Call<List<CasesModel>> call, @NonNull Response<List<CasesModel>> response) {
 
@@ -169,7 +132,8 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<CasesModel>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<CasesModel>> call, @NonNull Throwable t)
+            {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -177,10 +141,9 @@ public class MainActivity extends AppCompatActivity
 
     private void spinner()
     {
-        spinner = findViewById(R.id.spinner1);
-        spinner.setAdapter(new SpinnerAdapter(this, R.layout.spinner_dropdown, allList));
+        mainBinding.spinner1.setAdapter(new SpinnerAdapter(this, R.layout.spinner_dropdown, allList));
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        mainBinding.spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @SuppressLint("SetTextI18n")
             @Override
@@ -190,7 +153,7 @@ public class MainActivity extends AppCompatActivity
                 String name = spinnerModel.getName();
                 Log.e("SpinnerItem", name);
                 //Toast.makeText(MainActivity.this, name, Toast.LENGTH_LONG).show();
-                tvTitle.setText(name);
+                mainBinding.title.setText(name);
                 for (int i = 0; i<list.size(); i++)
                 {
                     String stFlag = list.get(i).getCountryInfo().getFlag();
@@ -214,41 +177,40 @@ public class MainActivity extends AppCompatActivity
                         Picasso.get()
                                 .load(stFlag)
                                 .error(R.drawable.ic_launcher_background)
-                                .into(flag);
+                                .into(mainBinding.flag);
 
                         Log.e("flag", stFlag);
 
-                        tconfirm.setText(NumberFormat.getInstance().format(confirm));
-                        todaysCon.setText("(+" + NumberFormat.getInstance().format(newCases) + ")");
-                        active.setText(NumberFormat.getInstance().format(acti));
-                        todaysAct.setText("(+" + NumberFormat.getInstance().format(newActi) + ")");
-                        recovered.setText(NumberFormat.getInstance().format(rec));
-                        todaysRecov.setText("(+" + NumberFormat.getInstance().format(newRec) + ")");
-                        death.setText(NumberFormat.getInstance().format(intDeath));
-                        todaysDeath.setText("(+" + NumberFormat.getInstance().format(newDeath) + ")");
-                        tvCases.setText(NumberFormat.getInstance().format(oneCasePerPeople));
-                        tvCritical.setText(NumberFormat.getInstance().format(critical));
+                        mainBinding.tvConfirm.setText(NumberFormat.getInstance().format(confirm));
+                        mainBinding.todaysConfirm.setText("(+" + NumberFormat.getInstance().format(newCases) + ")");
+                        mainBinding.tvActive.setText(NumberFormat.getInstance().format(acti));
+                        mainBinding.TodaysActive.setText("(+" + NumberFormat.getInstance().format(newActi) + ")");
+                        mainBinding.tvRecovered.setText(NumberFormat.getInstance().format(rec));
+                        mainBinding.todaysRecovered.setText("(+" + NumberFormat.getInstance().format(newRec) + ")");
+                        mainBinding.tvDeath.setText(NumberFormat.getInstance().format(intDeath));
+                        mainBinding.todaysDeath.setText("(+" + NumberFormat.getInstance().format(newDeath) + ")");
+                        mainBinding.tvCases.setText(NumberFormat.getInstance().format(oneCasePerPeople));
+                        mainBinding.tvCritical.setText(NumberFormat.getInstance().format(critical));
 
-                        pieChart.addPieSlice(new PieModel("Confirm", confirm, Color.parseColor("#FFEB3B")));
-                        pieChart.addPieSlice(new PieModel("Active", acti, Color.parseColor("#00BCD4")));
-                        pieChart.addPieSlice(new PieModel("Recovered", rec, Color.parseColor("#4CAF50")));
-                        pieChart.addPieSlice(new PieModel("Death", intDeath, Color.parseColor("#E63B75")));
-                        pieChart.addPieSlice(new PieModel("Critical", critical, Color.parseColor("#3F51B5")));
+                        mainBinding.piechart.addPieSlice(new PieModel("Confirm", confirm, Color.parseColor("#FFEB3B")));
+                        mainBinding.piechart.addPieSlice(new PieModel("Active", acti, Color.parseColor("#00BCD4")));
+                        mainBinding.piechart.addPieSlice(new PieModel("Recovered", rec, Color.parseColor("#4CAF50")));
+                        mainBinding.piechart.addPieSlice(new PieModel("Death", intDeath, Color.parseColor("#E63B75")));
+                        mainBinding.piechart.addPieSlice(new PieModel("Critical", critical, Color.parseColor("#3F51B5")));
 
-                        pieChart.startAnimation();
+                        mainBinding.piechart.startAnimation();
 
-                        TextView tvDemo = findViewById(R.id.demo);
-                        tvDemo.setText(iso);
+                        mainBinding.demo.setText(iso);
 
-                        mBarChart.addBar(new BarModel("A",oneCasePerPeople, 0xFF123456));
-                        mBarChart.addBar(new BarModel("B",critical, 0xFF123456));
-                        mBarChart.addBar(new BarModel("C",oneTestPerPeople, 0xFF123456));
-                        mBarChart.addBar(new BarModel("D",criticalPerOneMillion, 0xFF123456));
+                        mainBinding.barchart.addBar(new BarModel("A",oneCasePerPeople, 0xFF123456));
+                        mainBinding.barchart.addBar(new BarModel("B",critical, 0xFF123456));
+                        mainBinding.barchart.addBar(new BarModel("C",oneTestPerPeople, 0xFF123456));
+                        mainBinding.barchart.addBar(new BarModel("D",criticalPerOneMillion, 0xFF123456));
 
-                        mBarChart.startAnimation();
+                        mainBinding.barchart.startAnimation();
                         setText(list.get(i).getUpdated());
 
-                        Snackbar snackbar = Snackbar.make(layout,"Updated",Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar = Snackbar.make(mainBinding.mainLayout,"Updated",Snackbar.LENGTH_SHORT);
                         snackbar.show();
                     }
                 }
@@ -272,11 +234,12 @@ public class MainActivity extends AppCompatActivity
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(millisec);
 
-        tvDate.setText("Updated at " + format.format(calendar.getTime()));
+        mainBinding.date.setText("Updated at " + format.format(calendar.getTime()));
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onSupportNavigateUp()
+    {
         onBackPressed();
         return true;
     }

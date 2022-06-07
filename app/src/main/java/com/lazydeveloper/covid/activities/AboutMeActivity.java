@@ -1,53 +1,41 @@
 package com.lazydeveloper.covid.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.lazydeveloper.covid.R;
-
+import com.lazydeveloper.covid.databinding.ActivityAboutMeBinding;
 import java.util.Objects;
 
 public class AboutMeActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    TextView txttoolbar;
-    ImageView imgGit, imgLinkedin;
+    ActivityAboutMeBinding aboutMeBinding;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_me);
+        aboutMeBinding = ActivityAboutMeBinding.inflate(getLayoutInflater());
+        setContentView(aboutMeBinding.getRoot());
 
-        toolbar = findViewById(R.id.toolbar);
-        txttoolbar = findViewById(R.id.txttoolbar);
-
-        imgGit = findViewById(R.id.img_github);
-        imgLinkedin = findViewById(R.id.img_linkedin);
-
-        setSupportActionBar(toolbar);
+        setSupportActionBar(aboutMeBinding.toolbar.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle((" "));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //For changing the color of a back button...................................................
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        txttoolbar.setText("Profile");
+        aboutMeBinding.toolbar.txttoolbar.setText("Profile");
 
-        imgGit.setOnClickListener(v ->
+        aboutMeBinding.imgGithub.setOnClickListener(v ->
         {
             Intent i = new Intent(android.content.Intent.ACTION_VIEW);
             i.setData(Uri.parse("https://github.com/LalremLian/"));
             startActivity(i);
         });
-        imgLinkedin.setOnClickListener(v ->
+        aboutMeBinding.imgLinkedin.setOnClickListener(v ->
         {
             Intent i = new Intent(android.content.Intent.ACTION_VIEW);
             i.setData(Uri.parse("https://www.linkedin.com/in/lalrem-lian-b-tlung-63b9691b4/"));
